@@ -1,0 +1,16 @@
+INCLUDE symbols.ld
+
+/*
+ * NOTE: GNU ld documents that the entry point is the address of the 1st byte
+ * of the .text section, but ld.lld seems to expect a __start symbol.
+ */
+ENTRY(bhv_loop)
+
+SECTIONS
+{
+        /* NOTE: ld.lld outputs .rodata before .text by default */
+        .text     : { *(.text*) }
+        /* NOTE: ld.lld disallows to discard .shstrtab */ 
+        .shstrtab : { *(.shstrtab*) }
+        /DISCARD/ : { *(*) }
+}
